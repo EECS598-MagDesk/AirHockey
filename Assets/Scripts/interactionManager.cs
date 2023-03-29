@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
+using System.Text.RegularExpressions;
 
 public class interactionManager : MonoBehaviour
 {
@@ -22,7 +24,7 @@ public class interactionManager : MonoBehaviour
     public List<Vector3> testOnePos = new List<Vector3>();
     public List<Vector3> testTwoPos = new List<Vector3>();
 
-    private float speed = 100f;
+    private float speed = 100000f;
 
     private float originY = 5f;
     public float lengthMulti = 73f;
@@ -31,9 +33,11 @@ public class interactionManager : MonoBehaviour
     //private float heightOffset = 1.8f;
 
     private float prevTime = 0f;
-    private float timeOffset = 0.02f;
+    private float timeOffset = 0.01f;
 
     public scoreManager score;
+
+    public communicationManager commManager;
     
     // Start is called before the first frame update
     void Start()
@@ -54,7 +58,8 @@ public class interactionManager : MonoBehaviour
     {
         if (Time.time > prevTime + timeOffset)
         {
-            readInput(inputDir);
+            //readInput(inputDir);
+            readCommManager();
             prevTime = Time.time;
         }
         //parseInput(testOnePos, testTwoPos);
@@ -174,6 +179,54 @@ public class interactionManager : MonoBehaviour
         }
     }
 
+    void readCommManager()
+    {
+        string data = commManager.Get();
+        string pattern = @"\([^)]*\)";
+
+        // Match the pattern in the input string from the end using RightToLeft option
+        Match lastMatch = Regex.Match(data, pattern, RegexOptions.RightToLeft);
+
+        // Check if a match was found
+        if (lastMatch.Success)
+        {
+            Debug.Log(lastMatch.Value);
+        }
+        else
+        {
+            return;
+        }
+
+        string[] lines = lastMatch.Value.Split(
+            new[] { "\r\n", "\r", "\n" },
+            StringSplitOptions.None
+        );
+
+
+        List<Vector3> onePos = new List<Vector3>();
+        List<Vector3> twoPos = new List<Vector3>();
+
+        for (int i = 1; i < lines.Length - 1; i++)
+        {
+            string line = lines[i];
+            string[] parsedLine = line.Split(char.Parse(" "));
+            float x = float.Parse(parsedLine[0]);
+            x = lengthMulti * x;
+            float y = float.Parse(parsedLine[2]);
+            y = originY + heightMulti * y;
+            float z = float.Parse(parsedLine[1]);
+            z = widthMulti * z;
+            if (x < 0)
+            {
+                onePos.Add(new Vector3(-x, y, -z));
+            }
+            else
+            {
+                twoPos.Add(new Vector3(-x, y, -z));
+            }
+        }
+        parseInput(onePos, twoPos);
+    }
 
     void readInput(string dir)
     {
@@ -191,7 +244,6 @@ public class interactionManager : MonoBehaviour
         while(!reader.EndOfStream)
         {
             string line = reader.ReadLine();
-            Debug.Log(line);
             lines.Add(line);
             
         }
