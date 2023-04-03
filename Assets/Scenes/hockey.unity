@@ -837,6 +837,7 @@ MonoBehaviour:
   scoreOne: 0
   scoreTwo: 0
   puckPrefab: {fileID: 8326426601661171162, guid: 077cee890043e74418d2e148886a1037, type: 3}
+  puck: {fileID: 0}
   textMesh: {fileID: 2031197161}
 --- !u!4 &464733561
 Transform:
@@ -949,6 +950,49 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 492335016}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &561019257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 561019259}
+  - component: {fileID: 561019258}
+  m_Layer: 0
+  m_Name: aiManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &561019258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561019257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fadca00cf6ac8ca45ac48753b1f41a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &561019259
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561019257}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &584756493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1700,10 +1744,14 @@ MonoBehaviour:
   controller2_prefab: {fileID: 490086278649676820, guid: dd8eeb3e1fed01546983ad90346d2a18, type: 3}
   testOnePos: []
   testTwoPos: []
-  lengthMulti: 73
-  widthMulti: 43
+  lengthMulti: 67
+  widthMulti: 40
   score: {fileID: 464733560}
   commManager: {fileID: 365198894}
+  useTest: 1
+  useCommManager: 0
+  useAI: 1
+  AI: {fileID: 561019258}
 --- !u!4 &993464832
 Transform:
   m_ObjectHideFlags: 0

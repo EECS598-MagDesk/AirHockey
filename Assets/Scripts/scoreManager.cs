@@ -10,7 +10,7 @@ public class scoreManager : MonoBehaviour
     public int scoreOne = 0;
     public int scoreTwo = 0;
     public GameObject puckPrefab;
-    GameObject puck;
+    public GameObject puck;
 
     public TMP_Text textMesh;
     private string prevText = "";

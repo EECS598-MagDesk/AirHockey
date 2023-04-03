@@ -25,6 +25,7 @@ public class interactionManager : MonoBehaviour
     public List<Vector3> testTwoPos = new List<Vector3>();
 
     private float speed = 100000f;
+    private float aiSpeed = 20f;
 
     private float originY = 5f;
     public float lengthMulti = 73f;
@@ -38,6 +39,12 @@ public class interactionManager : MonoBehaviour
     public scoreManager score;
 
     public communicationManager commManager;
+
+    public bool useTest = false;
+    public bool useCommManager = false;
+    public bool useAI = false;
+
+    public aiManager AI;
     
     // Start is called before the first frame update
     void Start()
@@ -56,20 +63,47 @@ public class interactionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Time.time > prevTime + timeOffset)
+        if (useTest)
         {
-            //readInput(inputDir);
-            readCommManager();
-            prevTime = Time.time;
+            parseInput(testOnePos, testTwoPos);
         }
-        //parseInput(testOnePos, testTwoPos);
+        else
+        {
+            if (Time.time > prevTime + timeOffset)
+            {
+                if (useCommManager)
+                {
+                    readCommManager();
+                }
+                else
+                {
+                    readInput(inputDir);
+                }
+                prevTime = Time.time;
+            }
+        }
 
-        if (controllerOne.activeSelf)
+        if (useAI)
         {
-            //Debug.Log(OneTarget);
-            controllerOne.transform.position = Vector3.MoveTowards(controllerOne.transform.position, OneTarget, speed * Time.deltaTime);
+            Vector3 puckPos = score.puck.transform.GetChild(0).transform.position;
+            puckPos.z = puckPos.z / widthMulti;
+            puckPos.x = puckPos.x / lengthMulti;
+            AI.TrackPos(puckPos);
+            controllerTwo.SetActive(true);
+            TwoTarget = AI.GetPosition();
+            normalize(ref TwoTarget);
         }
-        if (controllerTwo.activeSelf)
+    }
+
+    private void FixedUpdate()
+    {
+        controllerOne.transform.position = Vector3.MoveTowards(controllerOne.transform.position, OneTarget, speed * Time.deltaTime);
+
+        if (useAI)
+        {
+            controllerTwo.transform.position = Vector3.MoveTowards(controllerTwo.transform.position, TwoTarget, aiSpeed * Time.deltaTime);
+        }
+        else
         {
             controllerTwo.transform.position = Vector3.MoveTowards(controllerTwo.transform.position, TwoTarget, speed * Time.deltaTime);
         }
@@ -179,6 +213,20 @@ public class interactionManager : MonoBehaviour
         }
     }
 
+    void normalize(ref float x, ref float y, ref float z)
+    {
+        x = lengthMulti * x;
+        y = originY + heightMulti * y;
+        z = widthMulti * z;
+    }
+
+    void normalize(ref Vector3 v)
+    {
+        v[0] = lengthMulti * v[0];
+        v[1] = originY + heightMulti * v[1];
+        v[2] = widthMulti * v[2];
+    }
+
     void readCommManager()
     {
         string data = commManager.Get();
@@ -211,11 +259,9 @@ public class interactionManager : MonoBehaviour
             string line = lines[i];
             string[] parsedLine = line.Split(char.Parse(" "));
             float x = float.Parse(parsedLine[0]);
-            x = lengthMulti * x;
             float y = float.Parse(parsedLine[2]);
-            y = originY + heightMulti * y;
             float z = float.Parse(parsedLine[1]);
-            z = widthMulti * z;
+            normalize(ref x, ref y, ref z);
             if (x < 0)
             {
                 onePos.Add(new Vector3(-x, y, -z));
@@ -249,13 +295,12 @@ public class interactionManager : MonoBehaviour
         }
         reader.Close();
         foreach (string line in lines) {
+            Debug.Log(line);
             string[] parsedLine = line.Split(char.Parse(" "));
             float x = float.Parse(parsedLine[0]);
-            x = lengthMulti * x;
             float y = float.Parse(parsedLine[2]);
-            y = originY + heightMulti * y;
             float z = float.Parse(parsedLine[1]);
-            z = widthMulti * z;
+            normalize(ref x, ref y, ref z);
             if (x < 0)
             {
                 onePos.Add(new Vector3(-x, y, -z));
