@@ -1744,13 +1744,13 @@ MonoBehaviour:
   controller2_prefab: {fileID: 490086278649676820, guid: dd8eeb3e1fed01546983ad90346d2a18, type: 3}
   testOnePos: []
   testTwoPos: []
-  lengthMulti: 67
-  widthMulti: 40
+  lengthMulti: 62.9
+  widthMulti: 37.6
   score: {fileID: 464733560}
   commManager: {fileID: 365198894}
-  useTest: 1
+  useTest: 0
   useCommManager: 0
-  useAI: 1
+  useAI: 0
   AI: {fileID: 561019258}
 --- !u!4 &993464832
 Transform:
