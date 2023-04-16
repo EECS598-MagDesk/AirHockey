@@ -10,6 +10,7 @@ public class scoreManager : MonoBehaviour
     public int scoreOne = 0;
     public int scoreTwo = 0;
     public GameObject puckPrefab;
+    [HideInInspector]
     public GameObject puck;
 
     public TMP_Text textMesh;
@@ -75,5 +76,13 @@ public class scoreManager : MonoBehaviour
         }
         SetScoreDisplay();
         ResetPuck();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Puck")
+        {
+            ResetPuck();
+        }
     }
 }

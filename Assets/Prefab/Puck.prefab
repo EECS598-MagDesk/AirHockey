@@ -215,7 +215,8 @@ GameObject:
   - component: {fileID: 9172707850549311670}
   - component: {fileID: 9172707850549311665}
   - component: {fileID: 9172707850549311625}
-  - component: {fileID: 4403055072417869019}
+  - component: {fileID: 5966491652673399985}
+  - component: {fileID: 8380185863938784296}
   m_Layer: 0
   m_Name: Body3
   m_TagString: Puck
@@ -313,7 +314,7 @@ MeshCollider:
   m_GameObject: {fileID: 6986064240643393807}
   m_Material: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: -1
@@ -330,20 +331,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 280351fbf308ca04b9dc619d4ae488b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!64 &4403055072417869019
-MeshCollider:
+--- !u!135 &5966491652673399985
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6986064240643393807}
-  m_Material: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
-  m_IsTrigger: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 4.5
+  m_Center: {x: 0, y: 0, z: 1.0000002}
+--- !u!65 &8380185863938784296
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986064240643393807}
+  m_Material: {fileID: 13400000, guid: ba92fb44336020f40bdf294bb66bc9da, type: 2}
+  m_IsTrigger: 0
   m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: -1
-  m_Mesh: {fileID: 6679289703562662588, guid: 3c5ce5705441fbe418694638b772ff5d, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 4, y: 4, z: 2.0000005}
+  m_Center: {x: 0, y: 0, z: -2.67}
 --- !u!1 &8326426601661171162
 GameObject:
   m_ObjectHideFlags: 0

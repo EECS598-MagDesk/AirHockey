@@ -7,12 +7,13 @@ public class forceCalculator : MonoBehaviour
 
     float force = 0f;
     List<float> speedArray = new List<float>();
-    private int recordSizeThresh = 5;
+    private int recordSizeThresh = 3;
     Rigidbody rig;
     public float mess = 5f;
     private Vector3 prevLocation;
+    private Vector3 prevDirection = new Vector3();
     private float prevTime;
-    private float timeOffset = 0.05f;
+    private float timeOffset = 0.2f;
 
     // Start is called before the first frame update
     void Start()
@@ -30,8 +31,9 @@ public class forceCalculator : MonoBehaviour
             {
                 speedArray.RemoveAt(0);
             }
-            Vector3 velocity = (transform.position - prevLocation) / Time.deltaTime;
+            Vector3 velocity = (transform.position - prevLocation) / (Time.time - prevTime);
             speedArray.Add(velocity.magnitude);
+            prevDirection = transform.position - prevLocation;
             prevLocation = transform.position;
             prevTime = Time.time;
         }
@@ -51,9 +53,9 @@ public class forceCalculator : MonoBehaviour
 
     public Vector3 GetForce(Vector3 direction)
     {
-        Debug.Log(direction);
-        Debug.Log(this.GetAcceleration());
-        Debug.Log(Vector3.Normalize(transform.position - prevLocation) * mess * this.GetAcceleration());
-        return Vector3.Dot(Vector3.Normalize(transform.position - prevLocation) * mess * this.GetAcceleration(), Vector3.Normalize(direction)) * Vector3.Normalize(direction);
+        //Debug.Log(direction);
+        //Debug.Log(this.GetAcceleration());
+        //Debug.Log(Vector3.Normalize(transform.position - prevLocation) * mess * this.GetAcceleration());
+        return Vector3.Dot(Vector3.Normalize(prevDirection) * mess * this.GetAcceleration(), Vector3.Normalize(direction)) * Vector3.Normalize(direction);
     }
 }

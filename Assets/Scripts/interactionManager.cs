@@ -55,8 +55,6 @@ public class interactionManager : MonoBehaviour
         controllerTwo = GameObject.Instantiate(controller2_prefab, gameObject.transform);
         controllerTwo.SetActive(false);
         controllerTwo.GetComponent<sliderCheck>().score_manger = score;
-        controllerOneWall = new List<GameObject>();
-        controllerTwoWall = new List<GameObject>();
 
     }
 
@@ -137,6 +135,24 @@ public class interactionManager : MonoBehaviour
 
     void parseInput (List<Vector3> onePos, List<Vector3> twoPos)
     {
+        if (!controllerOne.activeSelf)
+        {
+            controllerOne.transform.position = SetYOffset(onePos[0]);
+            controllerOne.SetActive(true);
+        }
+        OneTarget = SetYOffset(onePos[0]);
+       
+        if (!controllerTwo.activeSelf)
+        {
+            controllerTwo.transform.position = SetYOffset(onePos[1]);
+            controllerTwo.SetActive(true);
+        }
+        TwoTarget = SetYOffset(onePos[1]);
+    }
+
+    /*
+    void parseInput (List<Vector3> onePos, List<Vector3> twoPos)
+    {
         if (onePos.Count >= 5 && twoPos.Count >= 5)
         {
             score.ResetGame();
@@ -212,6 +228,7 @@ public class interactionManager : MonoBehaviour
             distroyWall(2);
         }
     }
+    */
 
     void normalize(ref float x, ref float y, ref float z)
     {
@@ -295,20 +312,19 @@ public class interactionManager : MonoBehaviour
         }
         reader.Close();
         foreach (string line in lines) {
-            Debug.Log(line);
             string[] parsedLine = line.Split(char.Parse(" "));
             float x = float.Parse(parsedLine[0]);
             float y = float.Parse(parsedLine[2]);
             float z = float.Parse(parsedLine[1]);
             normalize(ref x, ref y, ref z);
-            if (x < 0)
-            {
+            //if (x < 0)
+            //{
                 onePos.Add(new Vector3(-x, y, -z));
-            }
-            else
-            {
-                twoPos.Add(new Vector3(-x, y, -z));
-            }
+            //}
+            //else
+            //{
+            //    twoPos.Add(new Vector3(-x, y, -z));
+            //}
         }
 
         parseInput(onePos, twoPos);

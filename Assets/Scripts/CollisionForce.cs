@@ -6,19 +6,20 @@ public class CollisionForce : MonoBehaviour
 {
 
     Rigidbody rig;
-    private float forceMultiplier = 50f;
+    private float forceMultiplier = 500f;
     private float distThresh = 2f;
+    private float speedThresh = 100f;
 
     // Start is called before the first frame update
     void Start()
     {
         rig = gameObject.GetComponent<Rigidbody>();
     }
-
+    
     // Update is called once per frame
     void Update()
     {
-        
+        //rig.velocity = Vector3.ClampMagnitude(rig.velocity, speedThresh);
     }
 
     private void OnTriggerStay(Collider other)
@@ -28,9 +29,10 @@ public class CollisionForce : MonoBehaviour
             Vector3 direction = gameObject.transform.position - other.transform.position;
             direction.y = 0;
             Debug.Log(direction.magnitude);
+            /*
             if (direction.magnitude < distThresh)
             {
-                gameObject.transform.position = new Vector3(other.transform.position.x, gameObject.transform.position.y, other.transform.position.z) + Vector3.Normalize(direction) * distThresh;
+                //gameObject.transform.position = new Vector3(other.transform.position.x, gameObject.transform.position.y, other.transform.position.z) + Vector3.Normalize(direction) * distThresh;
                 Vector3 force = direction * forceMultiplier * 10f ;
                 rig.AddForce(force);
                 Debug.Log("#force");
@@ -38,11 +40,12 @@ public class CollisionForce : MonoBehaviour
             }
             else
             {
-                Vector3 force = other.gameObject.GetComponent<forceCalculator>().GetForce(direction);
+            */
+                Vector3 force = forceMultiplier * other.gameObject.GetComponent<forceCalculator>().GetForce(direction) + Vector3.Normalize(direction);
                 Debug.Log("#natural");
                 Debug.Log(force);
-                rig.AddForce(force * forceMultiplier);
-            }
+                rig.AddForce(force);
+            //}
         }
     }
 
